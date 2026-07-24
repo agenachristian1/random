@@ -24,10 +24,18 @@ for(let t=0;t<Math.PI*2;t+=0.08){
 }
 
 let time = 0;
+let lastTime = 0;
 
-function animate(){
+function animate(timestamp = performance.now()){
 
-    time += 0.011;
+    if(lastTime === 0){
+        lastTime = timestamp;
+    }
+
+    const delta = Math.min((timestamp - lastTime) / 1000, 0.05);
+    lastTime = timestamp;
+
+    time += delta * 0.72;
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -90,4 +98,4 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
-animate();
+animate(performance.now());
