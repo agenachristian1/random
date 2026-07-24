@@ -4,6 +4,8 @@ const ctx = canvas.getContext("2d");
 function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
 }
 
 resize();
@@ -33,6 +35,7 @@ function animate(){
 
     const cx = canvas.width/2;
     const cy = canvas.height/2;
+    const scale = Math.min(canvas.width, canvas.height) / 900;
 
     // Gentle breathing
     const beat = 1 + Math.sin(time*1.2)*0.03;
@@ -57,11 +60,11 @@ function animate(){
             -2*Math.cos(3*t)
             -Math.cos(4*t);
 
-        x *= 20*beat;
-        y *= 20*beat;
+        x *= 20 * beat * scale;
+        y *= 20 * beat * scale;
 
-        const floatX = Math.sin(time * 0.8) * 4;
-        const floatY = Math.cos(time * 0.8) * 6;
+        const floatX = Math.sin(time * 0.8) * 4 * scale;
+        const floatY = Math.cos(time * 0.8) * 6 * scale;
 
         const px = cx + x + floatX;
         const py = cy - y + floatY;
@@ -74,7 +77,8 @@ function animate(){
         const alpha = 0.65 + Math.sin(time * 1.4 + index * 0.2) * 0.25;
         ctx.fillStyle = `rgba(255,209,220,${alpha})`;
 
-        ctx.font = "20px Arial";
+        const fontSize = Math.max(14, Math.min(24, 20 * scale));
+        ctx.font = `${fontSize}px Arial`;
 
         ctx.fillText(item.text,px,py);
 
